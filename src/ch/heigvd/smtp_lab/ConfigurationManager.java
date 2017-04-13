@@ -20,8 +20,8 @@ public class ConfigurationManager {
 	private static ConfigurationManager instance;
 	
 	private int numberOfGroups;
-	private String hostAddress;
-	private int hostPort;
+	private String SMTPServerAddress;
+	private int SMTPServerPort;
 	private List<Person> victims;
 	private List<Message> messages;
 	
@@ -75,11 +75,11 @@ public class ConfigurationManager {
 		case "numberOfGroups":
 			numberOfGroups = Integer.valueOf(value);
 			break;
-		case "hostAddress":
-			hostAddress = value;
+		case "SMTPServerAddress":
+			SMTPServerAddress = value;
 			break;
-		case "hostPort":
-			hostPort = Integer.valueOf(value);
+		case "SMTPServerPort":
+			SMTPServerPort = Integer.valueOf(value);
 			break;
 		default:
 			LOG.info("Unknown parameter read in config file : "+name+"="+value);
@@ -87,7 +87,7 @@ public class ConfigurationManager {
 	}
 	
 	public String getHostAddress() {
-		return hostAddress;
+		return SMTPServerAddress;
 	}
 	
 	public int getNumberOfGroups() {
@@ -95,7 +95,7 @@ public class ConfigurationManager {
 	}
 	
 	public int getHostPort() {
-		return hostPort;
+		return SMTPServerPort;
 	}
 	
 	public List<Person> getVictims() {
