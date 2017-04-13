@@ -1,65 +1,76 @@
-# Teaching-HEIGVD-RES-2017-Labo-SMTP
+# E-mail pranker
+## Project description
+This project implements an e-mail pranker. It allows you to send an e-mail from a predefined list of message to a list of victims.
 
-## Objectives
+Choose the number of victim's groups you want and the pranker forms the groups from your victim's list. The first member of each group appear as the e-mail's sender and the others are the recipients.
 
-In this lab, you will develop a client application (TCP) in Java. This client application will use the Socket API to communicate with a SMTP server. The code that you write will include a **partial implementation of the SMTP protocol**. These are the objectives of the lab:
+Disclaimer : this application should only be used to prank volunteers. Don't use it to send spam, your SMTP server would be quickly blacklisted.
 
-* Make practical experiments to become familiar with the **SMTP protocol**. After the lab, you should be able to use a command line tool to **communicate with a SMTP server**. You should be able to send well-formed messages to the server, in order to send emails to the address of your choice.
+This project has been realized for the RES course at HEIG-VD, Yverdon-les-Bains.
 
-* Understand the notions of **test double** and **mock server**, which are useful when developing and testing a client-server application. During the lab, you will setup and use such a **mock server**.
+## Requirement
+- Java's JRE >= 1.8
+- A SMTP Server (MockMock server provided for testing)
 
-* Understand what it means to **implement the SMTP protocol** and be able to send e-mail messages, by working directly on top of the Socket API (i.e. you are not allowed to use a SMTP library).
+## Installation
+### From the sources
+This project is build with Maven. Then you just have to type the following command in the project's root to generate a `.jar` executable :
 
-* **See how easy it is to send forged e-mails**, which appear to be sent by certain people but in reality are issued by malicious users.
+`mvn clean install`
 
-* **Design a simple object-oriented model** to implement the functional requirements described in the next paragraph.
+Then move the built jar to the root (or any other folder) :
 
+`mv target/smtp_lab-0.0.1-SNAPSHOT.jar .`
 
+After configuring, you can launch the `.jar` executable :
 
+`java -jar smtp_lab-0.0.1-SNAPSHOT.jar`
 
-## Functional requirements
+### From the binary
+You can just execute the `.jar` binary provided at the project's root, after configuration :
 
-Your mission is to develop a client application that automatically plays pranks on a list of victims:
+`java -jar smtp_lab.jar`
 
-* The user should be able to **define a list of victims** (concretely, you should be able to create a file containing a list of e-mail addresses).
+## Configuration
+To run the pranker, the folder containing the `.jar` executable must contain a `config/` folder. This folder will contain the following files :
 
-* The user should be able to **define how many groups of victims should be formed** in a given campaign. In every group of victims, there should be 1 sender and at least 2 recipients (i.e. the minimum size for a group is 3).
+```
+config/config.properties
+config/messages.utf8
+config/victims.utf8```
 
-* The user should be able to **define a list of e-mail messages**. When a prank is played on a group of victims, then one of these messages should be selected. **The mail should be sent to all group recipients, from the address of the group sender**. In other words, the recipient victims should be lead to believe that the sender victim has sent them.
+### config.properties
+This file contains the following configuration :
+```
+numberOfGroups=6
+SMTPServerAddress=localhost
+SMTPServerPort=2525
+```
 
+### messages.utf8
+This file contains the messages that will be randomly picked to be sent to the groups. They must respect the following convention :
+```
+Subject of the message
+Content of the message,
+can be multilines.
+---
+Other message's subject
+Other message's content
+---
+```
 
-## Example
+### victims.utf8
+This file contains the victims that will either sent or receive the pranks. Just provide a list of e-mail adresses :
+```
+john.doe@example.com
+jane.doe@other-example.com
+```
 
-Consider that your program generates a group G1. The group sender is Bob. The group recipients are Alice, Claire and Peter. When the prank is played on group G1, then your program should pick one of the fake messages. It should communicate with a SMTP server, so that Alice, Claire and Peter receive an e-mail, which appears to be sent by Bob.
+As a group must contain at least 3 members, you must provide at least 3 * numberOfGroups victims.
 
+# Using the mock server
+To test the pranker, you can run MockMock server provided in this project's repository. Just run `java -jar MockMock-1.4.0.jar -p 2525` where `2525` is the listening port.
 
-## Deliverables
+You can then access `http://localhost:8282/` to show the e-mails the pranker would have sent.
 
-You will deliver the results of your lab in a GitHub repository. 
-
-Your repository should contain both the source code of your Java project and your report. Your report should be a single `README.md` file, located at the root of your repository. The images should be placed in a `figures` directory.
-
-Your report MUST include the following sections:
-
-* **A brief description of your project**: if people exploring GitHub find your repo, without a prior knowledge of the RES course, they should be able to understand what your repo is all about and whether they should look at it more closely.
-
-* **Clear and simple instructions for configuring your tool and running a prank campaign**. If you do a good job, an external user should be able to clone your repo, edit a couple of files and send a batch of e-mails in less than 10 minutes.
-
-In addition, your report SHOULD include (i.e. you will not have penalties if you don't provide the info, but if you want to add this project to your portfolio, it is worth doing it):
-
-* **A concise description of your implementation**: document the key aspects of your code. It is probably a good idea to start with a class diagram. Decide which classes you want to show (focus on the important ones) and describe their responsibilities in text. It is also certainly a good idea to include examples of dialogues between your client and a SMTP server (maybe you also want to include some screenshots here).
-
-* **Instructions for installing and using a mock SMTP server**. The user who wants to experiment with your tool but does not really want to send pranks immediately should be able to use a mock SMTP server. For people who are not familiar with this concept, explain it to them in simple terms. Explain which mock server you have used and how you have set it up.
-
-      
-## Evaluation
-
-* See CyberLearn.
-
-
-
-
-
-
-
-
+You can also download MockMock's last version from the repository https://github.com/tweakers-dev/MockMock
